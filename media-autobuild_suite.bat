@@ -1372,51 +1372,13 @@ rem ------------------------------------------------------------------
 rem download and install basic msys2 system:
 rem ------------------------------------------------------------------
 cd %build%
-set scripts=media-suite_compile.sh media-suite_helper.sh media-suite_update.sh
-for %%s in (%scripts%) do (
-    if not exist "%build%\%%s" (
+for %%s in (media-suite_compile.sh media-suite_helper.sh media-suite_update.sh msys2.ps1) do (
+    if not exist "%%s" (
         powershell -Command (New-Object System.Net.WebClient^).DownloadFile('"https://github.com/m-ab-s/media-autobuild_suite/raw/master/build/%%s"', '"%%s"' ^)
     )
 )
 
-rem checkmsys2
-if not exist "%instdir%\msys64\msys2_shell.cmd" (
-    echo -------------------------------------------------------------------------------
-    echo.
-    echo.- Download and install msys2 basic system
-    echo.
-    echo -------------------------------------------------------------------------------
-    echo [System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'; ^
-        (New-Object System.Net.WebClient^).DownloadFile(^
-        'https://github.com/msys2/msys2-installer/releases/download/nightly-x86_64/msys2-base-x86_64-latest.sfx.exe', ^
-        "$PWD\msys2-base.sfx.exe"^) | powershell -NoProfile -Command - || goto :errorMsys
-    :unpack
-    if exist %build%\msys2-base.sfx.exe (
-        echo -------------------------------------------------------------------------------
-        echo.
-        echo.- unpacking msys2 basic system
-        echo.
-        echo -------------------------------------------------------------------------------
-        .\msys2-base.sfx.exe x -y -o".."
-        if exist msys2-base.sfx.exe del msys2-base.sfx.exe
-    )
-
-    if not exist %instdir%\msys64\usr\bin\msys-2.0.dll (
-        :errorMsys
-        echo -------------------------------------------------------------------------------
-        echo.
-        echo.- Download msys2 basic system failed,
-        echo.- please download it manually from:
-        echo.- http://repo.msys2.org/distrib/
-        echo.- extract and put the msys2 folder into
-        echo.- the root media-autobuid_suite folder
-        echo.- and start the batch script again!
-        echo.
-        echo -------------------------------------------------------------------------------
-        pause
-        GOTO :unpack
-    )
-)
+if not exist "%instdir%\%msys2%\msys2_shell.cmd" call :doPowershell %build%\msys2.ps1 || exit 1
 
 rem getMintty
 set "bash=%instdir%\msys64\usr\bin\bash.exe"
@@ -1818,18 +1780,22 @@ goto :EOF
 setlocal enabledelayedexpansion
 set "log=%1"
 shift
-set "command=%1"
-shift
 set args=%*
-set arg=!args:%log% %command%=!
+set arg=!args:%log% =!
 if %noMintty%==y (
-    start "bash" /B /LOW /WAIT bash %build%\bash.sh "%build%\%log%" "%command%" "%arg%"
+    start "bash" /B /LOW /WAIT bash %build%\bash.sh "%build%\%log%" "%arg%"
 ) else (
     if exist %build%\%log% del %build%\%log%
     start /I /LOW /WAIT %instdir%\msys64\usr\bin\mintty.exe -d -i /msys2.ico ^
     -t "media-autobuild_suite" --log 2>&1 %build%\%log% /usr/bin/bash -lc ^
-    "%command% %arg%"
+    "%arg%"
 )
+endlocal
+goto :EOF
+
+:doPowershell
+setlocal
+powershell -NoProfile -NonInteractive -Command %*
 endlocal
 goto :EOF
 

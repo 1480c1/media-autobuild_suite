@@ -12,7 +12,9 @@
 
 mintty.lnk
 update_suite.sh
-!build/bash.ps1
+!build/helper.ps1
+!build/Invoke-Wget.ps1
+!build/msys2.ps1
 !build/*.sh
 !build/patches/
 !build/extras/
