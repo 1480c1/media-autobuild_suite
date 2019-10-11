@@ -1264,7 +1264,6 @@ do_cmake() {
         esac
     done
 
-    local PKG_CONFIG="$LOCALDESTDIR/bin/ab-pkg-config-static.bat"
     [[ -z $skip_build_dir ]] && create_build_dir "$cmake_build_dir"
     # use this array to pass additional parameters to cmake
     local cmake_extras=()
@@ -2069,6 +2068,7 @@ create_cmake_toolchain() {
         "SET(CMAKE_PREFIX_PATH $_win_path_LOCALDESTDIR $_win_path_MINGW_PREFIX $_win_path_MINGW_PREFIX/$MINGW_CHOST)"
         "SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)"
         "SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)"
+        "SET(PKG_CONFIG_EXECUTABLE $_win_path_LOCALDESTDIR/bin/ab-pkg-config-static.bat)"
     )
 
     [[ -f "$LOCALDESTDIR"/etc/toolchain.cmake ]] &&
