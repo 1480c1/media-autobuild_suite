@@ -1237,6 +1237,7 @@ do_cmake() {
     local bindir=""
     local root=".."
     local cmake_build_dir=""
+    local skip_build_dir=false
     while [[ -n $* ]]; do
         case "$1" in
         global | audio | video)
@@ -1248,12 +1249,12 @@ do_cmake() {
             shift
             ;;
         skip_build_dir)
-            local skip_build_dir=y
+            skip_build_dir=true
             shift
             ;;
         *)
             if [[ -d "./$1" ]]; then
-                [[ -n $skip_build_dir ]] && root="./$1" || root="../$1"
+                $skip_build_dir && root="./$1" || root="../$1"
                 shift
             elif [[ -d "../$1" ]]; then
                 root="../$1"
@@ -1264,7 +1265,7 @@ do_cmake() {
         esac
     done
 
-    [[ -z $skip_build_dir ]] && create_build_dir "$cmake_build_dir"
+    $skip_build_dir || create_build_dir "$cmake_build_dir"
     # use this array to pass additional parameters to cmake
     local cmake_extras=()
     extra_script pre cmake
