@@ -149,7 +149,7 @@ set iniOptions=arch license2 vpx2 x2643 x2652 other265 flac fdkaac mediainfo ^
 soxB ffmpegB2 ffmpegUpdate ffmpegChoice mp4box rtmpdump mplayer2 mpv cores deleteSource ^
 strip pack logging bmx standalone updateSuite aom faac exhale ffmbc curl cyanrip2 redshift ^
 rav1e ripgrep dav1d vvc jq dssim avs2 timeStamp noMintty ccache svthevc svtav1 svtvp9 xvc ^
-jo vlc CC
+jo vlc CC gst
 
 set deleteIni=0
 set ini=%build%\media-autobuild_suite.ini
@@ -1152,6 +1152,26 @@ if %buildCC%==2 set "CC=gcc"
 if %buildCC% GTR 2 GOTO CC
 if %deleteINI%==1 echo.CC=^%buildCC%>>%ini%
 
+:gst
+if %gstINI%==0 (
+    echo -------------------------------------------------------------------------------
+    echo -------------------------------------------------------------------------------
+    echo.
+    echo. Build gstreamer?
+    echo. 1 = Yes
+    echo. 2 = No
+    echo.
+    echo -------------------------------------------------------------------------------
+    echo -------------------------------------------------------------------------------
+    set /P buildgst="Build gst: "
+) else set buildgst=%gstINI%
+
+if "%buildgst%"=="" GOTO gst
+if %buildgst%==1 set "gst=y"
+if %buildgst%==2 set "gst=n"
+if %buildgst% GTR 2 GOTO gst
+if %deleteINI%==1 echo.gst=^%buildgst%>>%ini%
+
 :numCores
 if %NUMBER_OF_PROCESSORS% EQU 1 ( set coreHalf=1 ) else set /a coreHalf=%NUMBER_OF_PROCESSORS%/2
 if %coresINI%==0 (
@@ -1691,7 +1711,7 @@ set compileArgs=--cpuCount=%cpuCount% --build32=%build32% --build64=%build64% ^
 --ffmbc=%ffmbc% --curl=%curl% --cyanrip=%cyanrip% --redshift=%redshift% --rav1e=%rav1e% --ripgrep=%ripgrep% ^
 --dav1d=%dav1d% --vvc=%vvc% --jq=%jq% --jo=%jo% --dssim=%dssim% --avs2=%avs2% --timeStamp=%timeStamp% ^
 --noMintty=%noMintty% --ccache=%ccache% --svthevc=%svthevc% --svtav1=%svtav1% --svtvp9=%svtvp9% --xvc=%xvc% ^
---vlc=%vlc%
+--vlc=%vlc% --gst=%gst%
     set "noMintty=%noMintty%"
     if %build64%==yes ( set "MSYSTEM=MINGW64" ) else set "MSYSTEM=MINGW32"
     set "MSYS2_PATH_TYPE=inherit"
