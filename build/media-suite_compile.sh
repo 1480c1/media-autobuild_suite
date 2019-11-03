@@ -1896,14 +1896,14 @@ if [[ $gst == y ]]; then
                 do_mesoninstall -D{examples,tests,gtk_doc}=disabled
             do_checkIfExist
         fi
-
-        _check=(bin-audio/wildmidi-static.exe wildmidi_lib.h libWildMidi.a wildmidi.pc)
+cat > /dev/null <<'EOF'
+        _check=(bin/wildmidi-static.exe wildmidi_lib.h libWildMidi.a wildmidi.pc)
         if do_vcs "https://github.com/Mindwerks/wildmidi.git"; then
             do_uninstall "${_check[@]}"
             do_cmakeinstall audio -DWANT_STATIC=ON
             do_checkIfExist
         fi
-
+EOF
         # Currently does not build due to assuming msvc extensions for windows.
         #if do_vcs "https://gitlab.freedesktop.org/pulseaudio/webrtc-audio-processing.git"; then
         #    do_mesoninstall
