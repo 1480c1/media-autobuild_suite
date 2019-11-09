@@ -489,16 +489,16 @@ _check=(libwebp{,mux}.{{,l}a,pc})
     bin-global/{{c,d}webp,webpmux,img2webp}.exe)
 if [[ $ffmpeg != no || $standalone = y ]] && enabled libwebp &&
     do_vcs "https://chromium.googlesource.com/webm/libwebp"; then
+    do_patch "https://gist.githubusercontent.com/1480c1/56d6c645b324d831f594318d504ad1af/raw/0001-CMake-deps-order-tiff-jpeg-png-zlib-lzma-and-then-zs.patch" am
     if [[ $standalone = y ]]; then
-        extracommands=(--enable-libwebp{demux,decoder,extras}
-            "LIBS=$($PKG_CONFIG --libs libpng libtiff-4)")
+            extracommands=()
     else
-        extracommands=(--disable-tiff)
-        sed -i -e '/examples/d' -e 's/ man//' Makefile.am
+        extracommands=(-D{WEBP_BUILD_ANIM_UTILS,CWEBP,DWEBP,GIF2WEBP,IMG2WEBP,VWEBP,WEBPINFO,WEBPMUX,EXTRAS}"=OFF")
     fi
-    do_autoreconf
+
     do_uninstall include/webp bin-global/gif2webp.exe "${_check[@]}"
-    do_separate_confmakeinstall global --enable-{swap-16bit-csp,libwebpmux} \
+    do_cmakeinstall global -DWEBP_ENABLE_SWAP_16BIT_CSP=ON \
+        -DCMAKE_{EXE,SHARED}_LINKER_FLAGS="$($PKG_CONFIG --libs libpng libtiff-4)" \
         "${extracommands[@]}"
     do_checkIfExist
 fi
