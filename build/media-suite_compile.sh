@@ -1282,7 +1282,9 @@ if [[ $mediainfo = y ]]; then
     if do_vcs "https://github.com/MediaArea/ZenLib.git" libzen; then
         do_uninstall include/ZenLib bin-global/libzen-config \
             "${_check[@]}" libzen.la lib/cmake/zenlib
-        do_cmakeinstall Project/CMake
+        do_patch "https://gist.githubusercontent.com/1480c1/83d82274f3ba36b1e7942fc4ab8be448/raw/0001-CMake-Set-ZenLib_SOURCES_PATH-as-a-cache-variable.patch" am
+        cp -R Project/CMake/* .
+        do_cmakeinstall -DZenLib_SOURCES_PATH="$PWD/Source"
         do_checkIfExist
     fi
     fix_cmake_crap_exports "$LOCALDESTDIR/lib/cmake/zenlib"
@@ -1292,7 +1294,9 @@ if [[ $mediainfo = y ]]; then
     if do_vcs "https://github.com/MediaArea/MediaInfoLib.git" libmediainfo; then
         do_uninstall include/MediaInfo{,DLL} bin-global/libmediainfo-config \
             "${_check[@]}" libmediainfo.la lib/cmake/mediainfolib
-        do_cmakeinstall Project/CMake -DBUILD_ZLIB=off -DBUILD_ZENLIB=off
+        do_patch "https://gist.githubusercontent.com/1480c1/83d82274f3ba36b1e7942fc4ab8be448/raw/0001-CMake-Set-MediaInfoLib_SOURCES_PATH-as-a-cache-varia.patch" am
+        cp -R Project/CMake/* .
+        do_cmakeinstall -DMediaInfoLib_SOURCES_PATH="$PWD/Source" -DBUILD_ZLIB=off -DBUILD_ZENLIB=off
         do_checkIfExist
     fi
     fix_cmake_crap_exports "$LOCALDESTDIR/lib/cmake/mediainfolib"
