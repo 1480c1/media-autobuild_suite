@@ -1831,6 +1831,7 @@ enabled openssl && hide_libressl
 if [[ $ffmpeg != no ]]; then
     enabled libgsm && do_pacman_install gsm
     enabled libsnappy && do_addOption --extra-libs=-lstdc++ && do_pacman_install snappy
+    enabled librsvg && do_pacman_install librsvg
     if enabled libxvid && [[ $standalone = n ]]; then
         do_pacman_install xvidcore
         [[ -f $MINGW_PREFIX/lib/xvidcore.a ]] && mv -f "$MINGW_PREFIX"/lib/{,lib}xvidcore.a
