@@ -2564,7 +2564,7 @@ if [[ $vlc == y ]]; then
             "$LOCALDESTDIR"/vlc/lib/pkgconfig/libvlc.pc
             "$LOCALDESTDIR"/vlc/include/vlc/libvlc_version.h)
     _check=(bin-video/{cvlc,rvlc,vlc.exe} libexec/vlc/vlc-cache-gen.exe bin/libvlc.dll libvlc.pc vlc/libvlc_version.h)
-    if do_vcs "https://code.videolan.org/videolan/vlc.git"; then
+    if do_vcs "https://code.videolan.org/videolan/vlc-3.0.git"; then
         do_uninstall bin/plugins lib/vlc "${_check[@]}"
         # https://code.videolan.org/videolan/medialibrary/issues/220
         # msys2's patches
@@ -2573,10 +2573,20 @@ if [[ $vlc == y ]]; then
         do_patch "https://gist.githubusercontent.com/1480c1/8c50a0867aa1afceac064d2162120dde/raw/vlc-mabs.patch" am
 
         # msys2's patches
-        do_patch "https://gist.githubusercontent.com/1480c1/18177840f07357f7e5e5f1ae46762a8d/raw/0002-Revert-Win32-prefer-the-static-libraries-when-creati.patch" am
-        do_patch "https://gist.githubusercontent.com/1480c1/18177840f07357f7e5e5f1ae46762a8d/raw/0003-Linking-libqt_plugin-with-winmm.patch" am
-        do_patch "https://gist.githubusercontent.com/1480c1/18177840f07357f7e5e5f1ae46762a8d/raw/0004-Mingw-load-libraries-not-only-from-system32.patch" am
-        do_patch "https://gist.githubusercontent.com/1480c1/18177840f07357f7e5e5f1ae46762a8d/raw/0005-fix-inet_pton-search.patch" am
+        do_patch "https://raw.githubusercontent.com/msys2/MINGW-packages/master/mingw-w64-vlc/0001-Use-libdir-for-plugins-on-msys2.patch" am
+        do_patch "https://raw.githubusercontent.com/msys2/MINGW-packages/master/mingw-w64-vlc/0002-MinGW-w64-lfind-s-_NumOfElements-is-an-unsigned-int.patch" am
+        do_patch "https://raw.githubusercontent.com/msys2/MINGW-packages/master/mingw-w64-vlc/0003-MinGW-w64-don-t-pass-static-to-pkg-config-if-SYS-min.patch" am
+        do_patch "https://raw.githubusercontent.com/msys2/MINGW-packages/master/mingw-w64-vlc/0004-Revert-Win32-prefer-the-static-libraries-when-creati.patch" am
+        do_patch "https://raw.githubusercontent.com/msys2/MINGW-packages/master/mingw-w64-vlc/0005-Remove-legacy-defines.patch" am
+        do_patch "https://raw.githubusercontent.com/msys2/MINGW-packages/master/mingw-w64-vlc/0006-Linking-libqt_plugin-with-winmm.patch" am
+        do_patch "https://raw.githubusercontent.com/msys2/MINGW-packages/master/mingw-w64-vlc/0007-Mingw-load-libraries-not-only-from-system32.patch" am
+        do_patch "https://raw.githubusercontent.com/msys2/MINGW-packages/master/mingw-w64-vlc/0019-qt5-headers.patch" am
+        do_patch "https://raw.githubusercontent.com/msys2/MINGW-packages/master/mingw-w64-vlc/0020-minimum-windows-version-win7.patch" am
+        do_patch "https://raw.githubusercontent.com/msys2/MINGW-packages/master/mingw-w64-vlc/0021-fix-inet_pton-search.patch" am
+        do_patch "https://raw.githubusercontent.com/msys2/MINGW-packages/master/mingw-w64-vlc/0022-disable-stack-protector-flags.patch" am
+        do_patch "https://raw.githubusercontent.com/msys2/MINGW-packages/master/mingw-w64-vlc/0024-new-libplacebo-fix.patch" am
+        do_patch "https://raw.githubusercontent.com/msys2/MINGW-packages/master/mingw-w64-vlc/0025-iovec-redefined.patch" am
+        do_patch "https://raw.githubusercontent.com/msys2/MINGW-packages/master/mingw-w64-vlc/0026-libplacebo-api.patch" am
 
         do_autoreconf
         # All of the disabled are because of multiple issues both on the installed libs and on vlc's side.
