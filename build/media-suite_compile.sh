@@ -2525,6 +2525,7 @@ if [[ $vlc == y ]]; then
     _check=(libmedialibrary.{,l}a medialibrary.pc medialibrary/IAlbum.h)
     if do_vcs "https://code.videolan.org/videolan/medialibrary.git"; then
         do_uninstall include/medialibrary "${_check[@]}"
+        do_patch "https://gist.githubusercontent.com/1480c1/08277a5ebdc08d626af24da21469448c/raw/refactor_device_lister_4.patch" am
         do_autoreconf
         do_separate_confmakeinstall --disable-tests --without-libvlc
         do_checkIfExist
@@ -2562,7 +2563,7 @@ if [[ $vlc == y ]]; then
         # msys2's patches
         # Issues due to conflicting `vlc_module_name` between libvlc and libvlccore when linking vlc-static.exe and undefines.
         # having gpg-error after GCRYPT_LIBS causes some issues, and since it's already included in GCRYPT_LIBS
-        do_patch "https://gist.githubusercontent.com/1480c1/8c50a0867aa1afceac064d2162120dde/raw/vlc-mabs.patch" am
+        do_patch "https://gist.githubusercontent.com/1480c1/7c2903a9ea397f045d6a7e4fce29f4df/raw/mabsmedia.patch" am
 
         do_autoreconf
         # All of the disabled are because of multiple issues both on the installed libs and on vlc's side.
