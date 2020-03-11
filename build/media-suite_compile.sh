@@ -2604,6 +2604,7 @@ fi
 
 _check=(bin-global/redshift.exe)
 if [[ $redshift = y ]] && do_vcs "https://github.com/jonls/redshift.git"; then
+    do_pacman_remove perl
     [[ -f configure ]] || log bootstrap ./bootstrap
     CFLAGS+=' -D_POSIX_C_SOURCE' \
         do_separate_confmakeinstall global --enable-wingdi \
