@@ -2366,7 +2366,7 @@ fi
 
 if [[ $vlc == y ]]; then
     do_pacman_install lib{nfs,shout,samplerate,microdns,secret} \
-        a52dec taglib gtk3 lua perl
+        a52dec taglib gtk3 lua
 
     # Remove useless shell scripts file that causes errors when stdout is not a tty.
     find "$MINGW_PREFIX/bin/" -name "luac" -delete
