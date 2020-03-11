@@ -2448,7 +2448,7 @@ if [[ $vlc == y ]]; then
     if do_vcs "https://github.com/qt/qtdeclarative.git#branch=$_qt_version"; then
         vcs_clean "$PWD" git
         do_uninstall "${_check[@]}"
-        do_qmake
+        do_qmake -- -no-feature-qml-debug -no-feature-quick-designer
         do_makeinstall
         _add_static_link Qt5Quick qml/QtQuick.2 qtquick2plugin
         _add_static_link Qt5Quick qml/QtQuick/Layouts qquicklayoutsplugin
@@ -2486,7 +2486,7 @@ if [[ $vlc == y ]]; then
     if do_vcs "https://github.com/qt/qtquickcontrols2.git#branch=$_qt_version"; then
         vcs_clean "$PWD" git
         do_uninstall "${_check[@]}"
-        do_qmake
+        do_qmake -no-feature-quicktemplates2-multitouch -no-feature-quickcontrols2-universal -no-feature-quickcontrols2-material -no-feature-quickcontrols2-imagine
         do_makeinstall
         _add_static_link Qt5QuickControls2 qml/QtQuick/Controls.2 qtquickcontrols2plugin
         _add_static_link Qt5QuickControls2 qml/QtQuick/Templates.2 qtquicktemplates2plugin
