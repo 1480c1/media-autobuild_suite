@@ -2411,6 +2411,7 @@ if [[ $vlc == y ]]; then
             -confirm-license
             -release
             -static
+            -no-shared
             -platform win32-g++
             -make-tool make
             -opengl desktop
@@ -2418,6 +2419,8 @@ if [[ $vlc == y ]]; then
             -no-{fontconfig,pkg-config,sql-sqlite,gif,openssl,dbus,vulkan,sql-odbc,pch,compile-examples,glib}
             -nomake examples
             -nomake tests
+            -skip qtsql
+            -skip qttest
         )
         if [[ $strip == y ]]; then
             QT5Base_config+=(-strip)
