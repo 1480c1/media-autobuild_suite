@@ -2527,7 +2527,7 @@ if [[ $vlc == y ]]; then
         do_uninstall include/medialibrary "${_check[@]}"
         do_patch "https://gist.githubusercontent.com/1480c1/08277a5ebdc08d626af24da21469448c/raw/refactor_device_lister_4.patch" am
         do_autoreconf
-        do_separate_confmakeinstall --disable-tests --without-libvlc --disable-debug
+        do_separate_confmakeinstall --disable-tests --without-libvlc
         do_checkIfExist
     fi
 
