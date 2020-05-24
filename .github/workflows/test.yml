@@ -1,0 +1,11 @@
+name: test
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: windows-2019
+    steps:
+      - run: |
+          Get-ChildItem C:
+          Get-ChildItem C:\msys64
