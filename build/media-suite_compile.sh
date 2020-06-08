@@ -1856,12 +1856,10 @@ if [[ $gst == y ]]; then
         fi
 
         # For base plugin repository
-        # Currently does not build on windows due to small errors.
-        #if do_vcs "https://github.com/Libvisual/libvisual.git"; then
-        #    do_pacman_install SDL
-        #    cd_safe libvisual
-        #    do_cmake -DENABLE_EXTRA_OPTIMIZATIONS=ON -DENABLE_EXAMPLES=OFF
-        #fi
+        if do_vcs "https://github.com/Libvisual/libvisual.git"; then
+            do_pacman_install SDL orc
+            do_cmakeinstall libvisual -DENABLE_EXTRA_OPTIMIZATIONS=ON -DENABLE_{EXAMPLES,TESTS}=OFF
+        fi
 
         _deps=(libgst{reamer,base,controller,net}-1.0.a)
         _check=(
