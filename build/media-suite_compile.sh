@@ -1443,8 +1443,8 @@ if [[ $x264 != no ]]; then
     [[ $standalone = y ]] && _check+=(bin-video/x264.exe)
     _bitdepth=$(get_api_version x264_config.h BIT_DEPTH)
     if do_vcs "https://code.videolan.org/videolan/x264.git" ||
-        [[ $x264 = o8   && $_bitdepth =~ (0|10) ]] ||
-        [[ $x264 = high && $_bitdepth =~ (0|8) ]] ||
+        [[ $x264 = *o8   && $_bitdepth =~ (0|10) ]] ||
+        [[ $x264 = *high && $_bitdepth =~ (0|8) ]] ||
         [[ $x264 =~ (yes|full|shared|fullv) && "$_bitdepth" != 0 ]]; then
 
         extracommands=("--host=$MINGW_CHOST" "--prefix=$LOCALDESTDIR"
@@ -1454,7 +1454,7 @@ if [[ $x264 != no ]]; then
         old_PKG_CONFIG_PATH=$PKG_CONFIG_PATH
         PKG_CONFIG_PATH=$LOCALDESTDIR/opt/lightffmpeg/lib/pkgconfig:$MINGW_PREFIX/lib/pkgconfig
         unset_extra_script
-        if [[ $standalone = y && $x264 =~ (full|fullv) ]]; then
+        if [[ $standalone = y && $x264 = full* ]]; then
             _check=("$LOCALDESTDIR"/opt/lightffmpeg/lib/pkgconfig/libav{codec,format}.pc)
             do_vcs "https://git.ffmpeg.org/ffmpeg.git"
             do_uninstall "$LOCALDESTDIR"/opt/lightffmpeg
@@ -1527,8 +1527,8 @@ if [[ $x264 != no ]]; then
         fi
 
         case $x264 in
-        high) extracommands+=("--bit-depth=10") ;;
-        o8) extracommands+=("--bit-depth=8") ;;
+        *high) extracommands+=("--bit-depth=10") ;;
+        *o8) extracommands+=("--bit-depth=8") ;;
         *) extracommands+=("--bit-depth=all") ;;
         esac
 

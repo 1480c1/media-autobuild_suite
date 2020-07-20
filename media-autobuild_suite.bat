@@ -350,6 +350,8 @@ if %x2643INI%==0 (
     echo. 5 = Shared lib/binary with 8 and 10-bit
     echo. 6 = Same as 4 with video codecs only (can reduce size by ~3MB^)
     echo. 7 = Lib/binary with only 8-bit
+    echo. 8 = same as 4 but with only 8-bit
+    echo. 9 = same as 4 but with only 10-bit
     echo.
     echo. Binaries being built depends on "standalone=y" and are always static.
     echo.
@@ -366,7 +368,9 @@ if %buildx264%==4 set "x2643=full"
 if %buildx264%==5 set "x2643=shared"
 if %buildx264%==6 set "x2643=fullv"
 if %buildx264%==7 set "x2643=o8"
-if %buildx264% GTR 7 GOTO x264
+if %buildx264%==8 set "x2643=fullo8"
+if %buildx264%==9 set "x2643=fullhigh"
+if %buildx264% GTR 10 GOTO x264
 if %deleteINI%==1 echo.x2643=^%buildx264%>>%ini%
 
 :x265
