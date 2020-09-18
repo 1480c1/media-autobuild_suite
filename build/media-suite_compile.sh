@@ -2742,6 +2742,9 @@ EOF
     if do_vcs "https://code.videolan.org/videolan/vlc.git"; then
         do_uninstall bin/plugins lib/vlc "${_check[@]}"
         do_patch "https://raw.githubusercontent.com/m-ab-s/mabs-patches/master/vlc/0001-srt-Replace-SRTO_TSBPDDELAY-with-SRTO_LATENCY.patch" am
+        do_patch "https://raw.githubusercontent.com/m-ab-s/mabs-patches/master/vlc/0002-recv-Cast-to-char-for-recv.patch" am
+        do_patch "https://raw.githubusercontent.com/m-ab-s/mabs-patches/master/vlc/0003-srt.c-Use-srt_create_socket-instead-of-srt_socket.patch" am
+        do_patch "https://raw.githubusercontent.com/m-ab-s/mabs-patches/master/vlc/0004-libass-Use-ass_set_pixel_aspect-instead-of-ass_set_a.patch" am
         # https://code.videolan.org/videolan/medialibrary/issues/220
         # msys2's patches
         # Issues due to conflicting `vlc_module_name` between libvlc and libvlccore when linking vlc-static.exe and undefines.
