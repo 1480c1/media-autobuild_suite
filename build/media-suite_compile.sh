@@ -2766,7 +2766,7 @@ EOF
             --disable-{static,dbus,fluidsynth,svgdec,aom,mod,ncurses,mpg123,notify,svg,secret,telx,ssp,lua,gst-decode,nvdec} \
             --with-binary-version="MABS" BUILDCC="$CC" \
             CFLAGS="$CFLAGS -DGLIB_STATIC_COMPILATION -DQT_STATIC -DGNUTLS_INTERNAL_BUILD -DLIBXML_STATIC -DLIBXML_CATALOG_ENABLED" \
-            LIBS="$($PKG_CONFIG --libs libcddb regex iconv) -lwsock32 -lws2_32 -lpthread -liphlpapi"
+            LIBS="$($PKG_CONFIG --libs libcddb regex iconv harfbuzz) -lwsock32 -lws2_32 -lpthread -liphlpapi"
         do_makeinstall
         do_checkIfExist
         PATH="$LOCALDESTDIR/vlc/bin:$PATH" "$LOCALDESTDIR/vlc/libexec/vlc/vlc-cache-gen" "$LOCALDESTDIR/vlc/lib/plugins"
