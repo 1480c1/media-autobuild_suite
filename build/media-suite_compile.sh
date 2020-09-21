@@ -2496,7 +2496,7 @@ if [[ $cyanrip = y ]]; then
 fi
 
 if [[ $vlc == y ]]; then
-    do_pacman_install lib{cddb,nfs,shout,samplerate,microdns,secret} \
+    do_pacman_install lib{cddb,nfs,shout,samplerate,secret} \
         a52dec taglib gtk3 lua perl
 
     # Remove useless shell scripts file that causes errors when stdout is not a tty.
@@ -2652,6 +2652,14 @@ EOF
         do_makeinstall
         _add_static_link Qt5QuickControls2 qml/QtQuick/Controls.2 qtquickcontrols2plugin
         _add_static_link Qt5QuickControls2 qml/QtQuick/Templates.2 qtquicktemplates2plugin
+        do_checkIfExist
+    fi
+
+    do_pacman_remove microdns
+    _check=(libmicrodns.a microdns/{microdns,rr}.h microdns.pc)
+    if do_vcs "https://github.com/videolabs/libmicrodns.git"; then
+        do_uninstall include/microdns "${_check[@]}"
+        do_mesoninstall -D{tests,examples}=disabled
         do_checkIfExist
     fi
 
