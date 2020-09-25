@@ -2610,6 +2610,7 @@ EOF
     _check=(Qt5Quick.pc Qt5Qml.pc)
     if do_vcs "https://github.com/qt/qtdeclarative.git#branch=$_qt_version"; then
         do_uninstall "${_check[@]}"
+        do_patch "https://gist.githubusercontent.com/1480c1/c49260c1c5061ca88ccc10827c10c23f/raw/0001-features-hlsl_bytecode_header.prf-Use-DXSDK_DIR-for-.patch" am
         do_qmake
         do_makeinstall
         _add_static_link Qt5Quick qml/QtQuick.2 qtquick2plugin
