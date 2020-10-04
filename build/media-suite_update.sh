@@ -87,6 +87,20 @@ fi # end suite update
 grep -q abrepo /etc/pacman.conf && sed -i '/abrepo/d' /etc/pacman.conf
 rm -f /etc/pacman.d/abrepo.conf
 
+cat <<'EOF'
+-------------------------------------------------------------------------------
+Running rankmirrors
+-------------------------------------------------------------------------------
+EOF
+
+trap 'rm /etc/pacman.d/mirrorlist.*.ranked' SIGINT
+for list in mingw{32,64} msys; do
+    rankmirrors -r $list -v /etc/pacman.d/mirrorlist.$list > /etc/pacman.d/mirrorlist.$list.ranked &&
+        cp /etc/pacman.d/mirrorlist.$list{.ranked,}
+    rm /etc/pacman.d/mirrorlist.$list.ranked
+done
+trap - SIGINT
+
 echo
 echo "-------------------------------------------------------------------------------"
 echo "Updating pacman database..."
