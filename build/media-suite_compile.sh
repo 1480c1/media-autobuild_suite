@@ -2611,6 +2611,8 @@ EOF
     if do_vcs "https://github.com/qt/qtdeclarative.git#branch=$_qt_version"; then
         do_uninstall "${_check[@]}"
         do_patch "https://gist.githubusercontent.com/1480c1/c49260c1c5061ca88ccc10827c10c23f/raw/0001-features-hlsl_bytecode_header.prf-Use-DXSDK_DIR-for-.patch" am
+        git cherry-pick 0b9fcb829313d0eaf2b496bf3ad44e5628fa43b2 > /dev/null 2>&1 ||
+            git cherry-pick --abort
         do_qmake
         do_makeinstall
         _add_static_link Qt5Quick qml/QtQuick.2 qtquick2plugin
