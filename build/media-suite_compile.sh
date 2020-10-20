@@ -2741,16 +2741,20 @@ EOF
             "$LOCALDESTDIR"/vlc/include/vlc/libvlc_version.h)
     if do_vcs "https://code.videolan.org/videolan/vlc.git"; then
         do_uninstall bin/plugins lib/vlc "${_check[@]}"
-        do_patch "https://raw.githubusercontent.com/m-ab-s/mabs-patches/master/vlc/0001-srt-Replace-SRTO_TSBPDDELAY-with-SRTO_LATENCY.patch" am
-        do_patch "https://raw.githubusercontent.com/m-ab-s/mabs-patches/master/vlc/0002-recv-Cast-to-char-for-recv.patch" am
-        do_patch "https://raw.githubusercontent.com/m-ab-s/mabs-patches/master/vlc/0003-srt.c-Use-srt_create_socket-instead-of-srt_socket.patch" am
-        do_patch "https://raw.githubusercontent.com/m-ab-s/mabs-patches/master/vlc/0004-libass-Use-ass_set_pixel_aspect-instead-of-ass_set_a.patch" am
-        # https://code.videolan.org/videolan/medialibrary/issues/220
-        # msys2's patches
-        # Issues due to conflicting `vlc_module_name` between libvlc and libvlccore when linking vlc-static.exe and undefines.
-        # having gpg-error after GCRYPT_LIBS causes some issues, and since it's already included in GCRYPT_LIBS
-        do_patch "https://gist.githubusercontent.com/moisespr123/2369978dc603ed1e67bdf7aba7304416/raw/vlc-corrected-patch" am
-        do_patch "https://gist.githubusercontent.com/moisespr123/70e16f70f5d016c3d0f0dacbf97526f0/raw/medialib-patch"
+        _mabs_vlc=https://raw.githubusercontent.com/m-ab-s/mabs-patches/master/vlc
+        do_patch "$_mabs_vlc/0001-srt-Replace-SRTO_TSBPDDELAY-with-SRTO_LATENCY.patch" am
+        do_patch "$_mabs_vlc/0002-recv-Cast-to-char-for-recv.patch" am
+        do_patch "$_mabs_vlc/0003-modules-access-srt-Use-srt_create_socket-instead-of-.patch" am
+        do_patch "$_mabs_vlc/0004-modules-codec-libass-Use-ass_set_pixel_aspect-instea.patch" am
+        do_patch "$_mabs_vlc/0005-send-Cast-to-const-char-for-send.patch" am
+        do_patch "$_mabs_vlc/0006-Use-libdir-for-plugins-on-msys2.patch" am
+        do_patch "$_mabs_vlc/0007-include-vlc_fixups.h-fix-iovec-is-redefined-errors.patch" am
+        do_patch "$_mabs_vlc/0008-include-vlc_common.h-fix-snprintf-and-vsnprintf-rede.patch" am
+        do_patch "$_mabs_vlc/0009-configure.ac-check-if-_WIN32_IE-is-already-defined.patch" am
+        do_patch "$_mabs_vlc/0010-modules-stream_out-rtp-don-t-redefine-E-defines.patch" am
+        do_patch "$_mabs_vlc/0011-include-vlc_codecs.h-don-t-redefine-WAVE_FORMAT_PCM.patch" am
+        do_patch "$_mabs_vlc/0012-modules-audio_filter-channel_mixer-spatialaudio-add-.patch" am
+        unset _mabs_vlc
 
         do_autoreconf
         # All of the disabled are because of multiple issues both on the installed libs and on vlc's side.
