@@ -1762,11 +1762,14 @@ goto :EOF
     echo.PKG_CONFIG="${MINGW_PREFIX}/bin/pkgconf --keep-system-libs --static"
     echo.PKG_CONFIG_PATH="${LOCALDESTDIR}/lib/pkgconfig:${MINGW_PREFIX}/lib/pkgconfig"
     echo.CPPFLAGS="-D_FORTIFY_SOURCE=0 -D__USE_MINGW_ANSI_STDIO=1"
-    if %CC%==clang (
-        echo.CFLAGS="-mtune=generic -O2 -pipe"
-    ) else (
-        echo.CFLAGS="-mthreads -mtune=generic -O2 -pipe"
-    )
+    echo.CFLAGS=''
+    echo.case $bits in
+    echo.32bit^) CFLAGS="-march=i686 -msse2 -mfpmath=sse -mstackrealign "
+    echo.esac
+    echo.case $CC in
+    echo.*gcc*^) CFLAGS="${CFLAGS}-mthreads "
+    echo.esac
+    echo.CFLAGS="${CFLAGS}-mtune=generic -O2 -pipe"
     echo.CXXFLAGS="${CFLAGS}"
     echo.LDFLAGS="-pipe -static-libgcc -static-libstdc++"
     echo.export DXSDK_DIR ACLOCAL_PATH PKG_CONFIG PKG_CONFIG_PATH CPPFLAGS CFLAGS CXXFLAGS LDFLAGS MSYSTEM
