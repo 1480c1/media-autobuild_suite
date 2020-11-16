@@ -1004,8 +1004,7 @@ if [[ $ffmpeg != no ]] && enabled libvmaf &&
     do_vcs "https://github.com/Netflix/vmaf.git"; then
     do_uninstall share/model "${_check[@]}"
     cd_safe libvmaf
-    CFLAGS="-msse2 -mfpmath=sse -mstackrealign $CFLAGS" do_mesoninstall video \
-        -Denable_float=true
+    do_mesoninstall video -Denable_float=true
     do_checkIfExist
 fi
 file_installed -s libvmaf.dll.a && rm "$(file_installed libvmaf.dll.a)"
@@ -1140,7 +1139,7 @@ if { [[ $other265 = y ]] || { [[ $ffmpeg != no ]] && enabled libkvazaar; }; } &&
     do_autogen
     [[ $standalone = y || $other265 = y ]] ||
         sed -i "s|bin_PROGRAMS = .*||" src/Makefile.in
-    CFLAGS+=" -fno-asynchronous-unwind-tables" do_separate_confmakeinstall video
+    do_separate_confmakeinstall video
     do_checkIfExist
 fi
 
@@ -2646,8 +2645,7 @@ if [[ $vlc == y ]]; then
         do_uninstall include/pixman-1 "${_check[@]}"
         do_patch "https://raw.githubusercontent.com/m-ab-s/mabs-patches/master/pixman/0001-pixman-pixman-mmx-fix-redefinition-of-_mm_mulhi_pu16.patch" am
         NOCONFIGURE=y do_autogen
-        CFLAGS="-msse2 -mfpmath=sse -mstackrealign $CFLAGS" \
-            do_separate_confmakeinstall
+        do_separate_confmakeinstall
         do_checkIfExist
     fi
 
