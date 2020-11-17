@@ -295,7 +295,7 @@ do_vcs() {
     if [[ $oldHead != "$newHead" || -f custom_updated ]]; then
         touch recently_updated
         rm -f ./build_successful{32,64}bit{,_*}
-        if [[ $build32$build64$bits == yesyes64bit ]]; then
+        if [[ $build32$build64$bits == yesyes32bit ]]; then
             new_updates=yes
             new_updates_packages="$new_updates_packages [$vcsFolder]"
         fi
