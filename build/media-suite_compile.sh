@@ -2762,6 +2762,26 @@ EOF
 
         # Can't disable shared since vlc will error out. I don't think enabling static will really do anything for us other than breaking builds.
         create_build_dir
+        mapfile -d ' ' -t VLC_LIBS < <($PKG_CONFIG --libs libcddb regex iconv harfbuzz Qt5{Concurrent,Core,Gui,Network,OpenGL{,Extensions},PrintSupport,Qml{,Models,WorkerScript},Quick{,Controls2,Templates2,Widgets},Sql,Svg,Widgets,Xml})
+        VLC_LIBS+=(
+            -lwsock32
+            -lws2_32
+            -lpthread
+            -liphlpapi
+            -L"$(cygpath -m "$LOCALDESTDIR/qml/QtQuick/Shapes")"
+            -L"$(cygpath -m "$LOCALDESTDIR/qml/QtQml")"
+            -lqmlshapesplugin
+            -lQt5QuickShapes
+            -lqmlplugin
+            -lQt5Qml
+        )
+
+        {
+            for extralib_dir in $(printf '%s\n' "${VLC_LIBS[@]}" | grep '^-L' | tac | awk '!x[$0]++' | tac | tr '\n' ' '); do
+                [[ -d ${extralib_dir#-L} ]] && printf '%s\n' "$extralib_dir"
+            done
+            printf '%s\n' "${VLC_LIBS[@]}" | grep -v '^-L'
+        } | sed '/^[[:space:]]*$/d' | tac | awk '!x[$0]++' | tac > LIBS.txt
         config_path=".." do_configure \
             --prefix="$LOCALDESTDIR/vlc" \
             --sysconfdir="$LOCALDESTDIR/vlc/etc" \
@@ -2770,7 +2790,7 @@ EOF
             --disable-{static,dbus,fluidsynth,svgdec,aom,mod,ncurses,mpg123,notify,svg,secret,telx,ssp,lua,gst-decode,nvdec} \
             --with-binary-version="MABS" BUILDCC="$CC" \
             CFLAGS="$CFLAGS -DGLIB_STATIC_COMPILATION -DQT_STATIC -DGNUTLS_INTERNAL_BUILD -DLIBXML_STATIC -DLIBXML_CATALOG_ENABLED" \
-            LIBS="$($PKG_CONFIG --libs libcddb regex iconv harfbuzz) -lwsock32 -lws2_32 -lpthread -liphlpapi -L$LOCALDESTDIR/qml/QtQml -lqmlplugin -lQt5Qml"
+            LIBS="@$PWD/LIBS.txt"
         do_makeinstall
         do_checkIfExist
         PATH="$LOCALDESTDIR/vlc/bin:$PATH" "$LOCALDESTDIR/vlc/libexec/vlc/vlc-cache-gen" "$LOCALDESTDIR/vlc/lib/plugins"
