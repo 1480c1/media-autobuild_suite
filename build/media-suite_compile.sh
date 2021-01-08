@@ -2770,6 +2770,8 @@ EOF
             -liphlpapi
             -L"$(cygpath -m "$LOCALDESTDIR/qml/QtQuick/Shapes")"
             -L"$(cygpath -m "$LOCALDESTDIR/qml/QtQml")"
+            -L"$(cygpath -m "$LOCALDESTDIR/qml/QtQuick/Templates.2")"
+            -lqtquicktemplates2plugin
             -lqmlshapesplugin
             -lQt5QuickShapes
             -lqmlplugin
