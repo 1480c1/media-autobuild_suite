@@ -2762,29 +2762,6 @@ EOF
 
         # Can't disable shared since vlc will error out. I don't think enabling static will really do anything for us other than breaking builds.
         create_build_dir
-        mapfile -d ' ' -t VLC_LIBS < <(
-            cat <<-EOF
-            -L$LOCALDESTDIR/lib
-            -L$LOCALDESTDIR/qml/QtQuick/Shapes
-            -L$LOCALDESTDIR/qml/QtQml
-            -lqmlshapesplugin
-            -lQt5QuickShapes
-            -lqmlplugin
-EOF
-            $PKG_CONFIG --libs libcddb regex iconv harfbuzz Qt5{Concurrent,Core,Gui,Network,OpenGL{,Extensions},PrintSupport,Qml{,Models,WorkerScript},Quick{,Controls2,Templates2,Widgets},Sql,Svg,Widgets,Xml} |
-            sed "
-                s#\.a##g
-                s# $(cygpath -m "$MINGW_PREFIX/lib")/lib# \-l#g
-                s# $(cygpath -m "$LOCALDESTDIR/lib")/lib# \-l#g
-            "
-        )
-
-        mapfile -t VLC_LIBS < <(
-            {
-                printf '%s\n' "${VLC_LIBS[@]}" | grep '^-L'
-                printf '%s\n' "${VLC_LIBS[@]}" -lwsock32 | grep -v '^-L'
-            } | sed '/^[[:space:]]*$/d' | tac | awk '!x[$0]++' | tac
-        )
         config_path=".." do_configure \
             --prefix="$LOCALDESTDIR/vlc" \
             --sysconfdir="$LOCALDESTDIR/vlc/etc" \
@@ -2792,8 +2769,7 @@ EOF
             --enable-{shared,avcodec,merge-ffmpeg,qt,nls} \
             --disable-{static,dbus,fluidsynth,svgdec,aom,mod,ncurses,mpg123,notify,svg,secret,telx,ssp,lua,gst-decode,nvdec} \
             --with-binary-version="MABS" BUILDCC="$CC" \
-            CFLAGS="$CFLAGS -DGLIB_STATIC_COMPILATION -DQT_STATIC -DGNUTLS_INTERNAL_BUILD -DLIBXML_STATIC -DLIBXML_CATALOG_ENABLED" \
-            LIBS="${VLC_LIBS[*]} -lsupc++"
+            CFLAGS="$CFLAGS -DGLIB_STATIC_COMPILATION -DQT_STATIC -DGNUTLS_INTERNAL_BUILD -DLIBXML_STATIC -DLIBXML_CATALOG_ENABLED"
         do_makeinstall
         do_checkIfExist
         PATH="$LOCALDESTDIR/vlc/bin:$PATH" "$LOCALDESTDIR/vlc/libexec/vlc/vlc-cache-gen" "$LOCALDESTDIR/vlc/lib/plugins"
