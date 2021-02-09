@@ -127,7 +127,7 @@ libopenmpt version3 librav1e libsrt libgsm libvmaf libsvtav1
 set ffmpeg_options_full=chromaprint decklink frei0r libbs2b libcaca ^
 libcdio libflite libfribidi libgme libilbc libsvthevc ^
 libsvtvp9 libkvazaar libmodplug librtmp librubberband #libssh libtesseract libxavs ^
-libzmq libzvbi openal libcodec2 ladspa #vapoursynth #liblensfun ^
+libzmq libzvbi openal libcodec2 ladspa vapoursynth liblensfun ^
 libglslang vulkan libdavs2 libxavs2 libuavs3d
 
 :: options also available with the suite that add shared dependencies
