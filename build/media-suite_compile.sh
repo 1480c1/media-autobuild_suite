@@ -2741,6 +2741,7 @@ EOF
             "$LOCALDESTDIR"/vlc/include/vlc/libvlc_version.h)
     if do_vcs "https://code.videolan.org/videolan/vlc.git"; then
         do_uninstall bin/plugins lib/vlc "${_check[@]}"
+        sed -i '/Libs.private:/ { s#/mingw64/lib/lib#-l#g; s#.dll.a##g }' "$MINGW_PREFIX/lib/pkgconfig/gpg-error.pc"
         _mabs_vlc=https://raw.githubusercontent.com/m-ab-s/mabs-patches/master/vlc
         do_multipatch() {
             local am=''
@@ -2781,6 +2782,7 @@ EOF
             --enable-{shared,avcodec,merge-ffmpeg,qt,nls} \
             --disable-{static,dbus,fluidsynth,svgdec,aom,mod,ncurses,mpg123,notify,svg,secret,telx,ssp,lua,gst-decode,nvdec} \
             --with-binary-version="MABS" BUILDCC="$CC" \
+            GCRYPT_LIBS="$($PKG_CONFIG --libs libgcrypt)" \
             CFLAGS="$CFLAGS -DGLIB_STATIC_COMPILATION -DQT_STATIC -DGNUTLS_INTERNAL_BUILD -DLIBXML_STATIC -DLIBXML_CATALOG_ENABLED"
         do_makeinstall
         do_checkIfExist
