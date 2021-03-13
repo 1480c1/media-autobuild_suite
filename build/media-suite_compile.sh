@@ -2742,19 +2742,31 @@ EOF
     if do_vcs "https://code.videolan.org/videolan/vlc.git"; then
         do_uninstall bin/plugins lib/vlc "${_check[@]}"
         _mabs_vlc=https://raw.githubusercontent.com/m-ab-s/mabs-patches/master/vlc
-        do_patch "$_mabs_vlc/0001-recv-Cast-to-char-for-recv.patch" am
-        do_patch "$_mabs_vlc/0002-modules-access-srt-Use-srt_create_socket-instead-of-.patch" am
-        do_patch "$_mabs_vlc/0003-modules-codec-libass-Use-ass_set_pixel_aspect-instea.patch" am
-        do_patch "$_mabs_vlc/0004-send-Cast-to-const-char-for-send.patch" am
-        do_patch "$_mabs_vlc/0005-Use-libdir-for-plugins-on-msys2.patch" am
-        do_patch "$_mabs_vlc/0006-include-vlc_fixups.h-fix-iovec-is-redefined-errors.patch" am
-        do_patch "$_mabs_vlc/0007-include-vlc_common.h-fix-snprintf-and-vsnprintf-rede.patch" am
-        do_patch "$_mabs_vlc/0008-configure.ac-check-if-_WIN32_IE-is-already-defined.patch" am
-        do_patch "$_mabs_vlc/0009-modules-stream_out-rtp-don-t-redefine-E-defines.patch" am
-        do_patch "$_mabs_vlc/0010-include-vlc_codecs.h-don-t-redefine-WAVE_FORMAT_PCM.patch" am
-        do_patch "$_mabs_vlc/0011-modules-audio_filter-channel_mixer-spatialaudio-add-.patch" am
-        do_patch "$_mabs_vlc/0012-MediaLibrary-Control-add-new-duration-option.patch" am
-        unset _mabs_vlc
+        do_multipatch() {
+            local am=''
+            case $1 in
+            am) am=am && shift ;;
+            esac
+            for patch; do
+                do_patch "$patch" $am
+            done
+        }
+        do_multipatch am \
+            "$_mabs_vlc/0001-medialib-disable-if-already-in-use.patch" \
+            "$_mabs_vlc/0002-recv-Cast-to-char-for-recv.patch" \
+            "$_mabs_vlc/0003-modules-access-srt-Use-srt_create_socket-instead-of-.patch" \
+            "$_mabs_vlc/0004-modules-codec-libass-Use-ass_set_pixel_aspect-instea.patch" \
+            "$_mabs_vlc/0005-send-Cast-to-const-char-for-send.patch" \
+            "$_mabs_vlc/0006-Use-libdir-for-plugins-on-msys2.patch" \
+            "$_mabs_vlc/0007-include-vlc_fixups.h-fix-iovec-is-redefined-errors.patch" \
+            "$_mabs_vlc/0008-include-vlc_common.h-fix-snprintf-and-vsnprintf-rede.patch" \
+            "$_mabs_vlc/0009-configure.ac-check-if-_WIN32_IE-is-already-defined.patch" \
+            "$_mabs_vlc/0010-modules-stream_out-rtp-don-t-redefine-E-defines.patch" \
+            "$_mabs_vlc/0011-include-vlc_codecs.h-don-t-redefine-WAVE_FORMAT_PCM.patch" \
+            "$_mabs_vlc/0012-modules-audio_filter-channel_mixer-spatialaudio-add-.patch" \
+            "$_mabs_vlc/0013-medialibrary-add-missing-parameter-for-media.patch" \
+            "$_mabs_vlc/0014-modules-access_output-don-t-put-lgpg-error-for-liveh.patch"
+        unset _mabs_vlc do_multipatch
 
         do_autoreconf
         # All of the disabled are because of multiple issues both on the installed libs and on vlc's side.
