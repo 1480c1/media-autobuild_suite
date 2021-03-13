@@ -2495,8 +2495,8 @@ if [[ $cyanrip = y ]]; then
     fi
 fi
 
-if [[ $vlc == y ]]; then
-    do_pacman_install lib{cddb,nfs,shout,samplerate,secret} \
+if [[ $vlc == y  && $bits != 32bit ]]; then
+    do_pacman_install lib{nfs,shout,samplerate,secret} \
         a52dec taglib gtk3 lua perl
 
     # Remove useless shell scripts file that causes errors when stdout is not a tty.
@@ -2652,6 +2652,16 @@ EOF
         do_makeinstall
         _add_static_link Qt5QuickControls2 qml/QtQuick/Controls.2 qtquickcontrols2plugin
         _add_static_link Qt5QuickControls2 qml/QtQuick/Templates.2 qtquicktemplates2plugin
+        do_checkIfExist
+    fi
+
+    do_pacman_remove libcddb
+    _check=(libcddb.{l,}a libcddb.pc cddb/cddb.h bin-audio/cddb_query.exe)
+    if do_vcs "https://github.com/1480c1/libcddb.git"; then
+        do_patch "https://gist.githubusercontent.com/1480c1/dfe07bdc3aed22517cd5512e47cfcc78/raw/0001-configure.ac-use-pkg-config-for-regex-and-iconv.patch" am
+        do_uninstall include/cddb libcddb.{l,}a libcddb.pc cddb_query.exe
+        do_autoreconf
+        do_separate_confmakeinstall audio
         do_checkIfExist
     fi
 
