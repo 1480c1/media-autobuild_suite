@@ -251,6 +251,7 @@ if [[ $mplayer = y || $mpv = y ]] ||
         do_removeOption "--enable-(lib|)fontconfig"
     if enabled_any {lib,}fontconfig &&
         do_vcs "https://gitlab.freedesktop.org/fontconfig/fontconfig.git#tag=LATEST"; then
+        do_pacman_install gperf
         do_uninstall include/fontconfig "${_check[@]}"
         sed -i 's|Libs.private:|& -lintl|' fontconfig.pc.in
         for _s in printf fprintf snprintf vfprintf; do
