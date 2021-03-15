@@ -222,11 +222,8 @@ _check=(libxml2.a libxml2/libxml/xmlIO.h libxml-2.0.pc)
 if { enabled libxml2 || [[ $cyanrip = y ]]; } &&
     do_vcs "https://gitlab.gnome.org/GNOME/libxml2.git";then
     do_uninstall include/libxml2/libxml "${_check[@]}"
-    NOCONFIGURE=true do_autogen
-    [[ -f config.mak ]] && log "distclean" make distclean
-    sed -ri 's|(bin_PROGRAMS = ).*|\1|g;/^runtest_SOURCES.*/,/We create xml2Conf.*/d' Makefile.am
     CFLAGS+=" -DLIBXML_STATIC_FOR_DLL -DNOLIBTOOL" \
-        do_separate_confmakeinstall --without-python
+        do_cmakeinstall -DLIBXML2_WITH_PROGRAMS=OFF -DLIBXML2_WITH_TESTS=OFF -DLIBXML2_WITH_PYTHON=OFF
     do_checkIfExist
 fi
 
