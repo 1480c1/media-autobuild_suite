@@ -232,15 +232,15 @@ if [[ $mplayer = y || $mpv = y ]] ||
     { [[ $ffmpeg != no ]] && enabled_any libass libfreetype {lib,}fontconfig libfribidi; }; then
     do_pacman_remove freetype fontconfig harfbuzz fribidi
 
-    _check=(libfreetype.{l,}a freetype2.pc)
+    _check=(libfreetype.a freetype2.pc)
     [[ $ffmpeg = sharedlibs ]] && _check+=(bin-video/libfreetype-6.dll libfreetype.dll.a)
     if do_vcs "https://git.savannah.gnu.org/git/freetype/freetype2.git#tag=LATEST"; then
-        do_autogen
+        do_patch "https://gitlab.freedesktop.org/freetype/freetype/-/merge_requests/18.patch" am
         do_uninstall include/freetype2 bin-global/freetype-config \
             bin{,-video}/libfreetype-6.dll libfreetype.dll.a "${_check[@]}"
-        extracommands=(--with-{harfbuzz,png,bzip2,brotli,zlib}"=no")
-        [[ $ffmpeg = sharedlibs ]] && extracommands+=(--enable-shared)
-        do_separate_confmakeinstall global "${extracommands[@]}"
+        extracommands=(-DCMAKE_DISABLE_FIND_PACKAGE_{HARFBUZZ,PNG,BZIP2,BROTLI,ZLIB}"=OFF")
+        [[ $ffmpeg = sharedlibs ]] && extracommands+=("-DBUILD_SHARED_LIBS=ON")
+        do_cmakeinstall global -DDISABLE_FORCE_DEBUG_POSTFIX=ON
         [[ $ffmpeg = sharedlibs ]] && do_install "$LOCALDESTDIR"/bin/libfreetype-6.dll bin-video/
         do_checkIfExist
     fi
