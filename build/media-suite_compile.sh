@@ -622,7 +622,7 @@ if [[ $ffmpeg != no ]] && enabled libilbc &&
     do_vcs "https://github.com/TimothyGu/libilbc.git"; then
     do_uninstall "${_check[@]}"
     log -q "git.submodule" git submodule update --init --recursive
-    do_cmakeinstall -DUNIX=OFF
+    do_cmakeinstall
     do_checkIfExist
     add_to_remove
 fi
@@ -1431,7 +1431,7 @@ if [[ $bits = 32bit ]]; then
 elif { [[ $svthevc = y ]] || enabled libsvthevc; } &&
     do_vcs "https://github.com/OpenVisualCloud/SVT-HEVC.git"; then
     do_uninstall "${_check[@]}" include/svt-hevc
-    do_cmakeinstall video -DUNIX=OFF
+    do_cmakeinstall video
     do_checkIfExist
 fi
 
@@ -1442,7 +1442,7 @@ if [[ $bits = 32bit ]]; then
 elif { [[ $svtav1 = y ]] || enabled libsvtav1; } &&
     do_vcs "https://github.com/AOMediaCodec/SVT-AV1.git"; then
     do_uninstall include/svt-av1 "${_check[@]}" include/svt-av1
-    do_cmakeinstall video -DUNIX=OFF
+    do_cmakeinstall video
     do_checkIfExist
 fi
 
@@ -1453,7 +1453,7 @@ if [[ $bits = 32bit ]]; then
 elif { [[ $svtvp9 = y ]] || enabled libsvtvp9; } &&
     do_vcs "https://github.com/OpenVisualCloud/SVT-VP9.git"; then
     do_uninstall include/svt-vp9 "${_check[@]}" include/svt-vp9
-    do_cmakeinstall video -DUNIX=OFF
+    do_cmakeinstall video
     do_checkIfExist
 fi
 
@@ -1836,7 +1836,7 @@ if { { [[ $ffmpeg != no ]] && enabled vulkan; } || ! mpv_disabled vulkan; } &&
     do_print_progress "Building Vulkan-Loader"
     CFLAGS+=" -DSTRSAFE_NO_DEPRECATE" do_cmakeinstall -DBUILD_TESTS=OFF -DUSE_CCACHE=OFF \
     -DUSE_UNSAFE_C_GEN=ON -DVULKAN_HEADERS_INSTALL_DIR="$LOCALDESTDIR" \
-    -DBUILD_STATIC_LOADER=ON -DUNIX=OFF
+    -DBUILD_STATIC_LOADER=ON
     do_checkIfExist
     unset _DeadSix27 _mabs _shinchiro
 fi
@@ -1847,7 +1847,7 @@ if [[ $ffmpeg != no ]] && enabled libglslang &&
     do_vcs "https://github.com/KhronosGroup/glslang.git"; then
     do_uninstall "${_check[@]}"
     log dependencies /usr/bin/python ./update_glslang_sources.py
-    do_cmakeinstall -DUNIX=OFF
+    do_cmakeinstall
     do_checkIfExist
 fi
 
