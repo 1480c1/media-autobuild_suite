@@ -2023,6 +2023,19 @@ EOF
         printf '%s\r\n' "@echo off" "" "bash $LOCALDESTDIR/bin/ab-pkg-config --static %*" > "$LOCALDESTDIR"/bin/ab-pkg-config-static.bat
 }
 
+create_ab_toolchain() (
+    mkdir -p "$LOCALDESTDIR/bin" > /dev/null 2>&1
+    case $CC in
+    *gcc*)
+        ln -sf "$MINGW_PREFIX/bin/ld.exe" "$LOCALDESTDIR/bin/ld.exe"
+        ;;
+    *clang*)
+        ln -sf "$MINGW_PREFIX/bin/ld.lld.exe" "$LOCALDESTDIR/bin/ld.exe"
+        ;;
+    esac
+    hash -r
+)
+
 create_ab_ccache() {
     local bin temp_file ccache_path=false ccache_win_path=
     temp_file=$(mktemp)

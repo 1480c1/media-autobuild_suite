@@ -106,7 +106,7 @@ intltool libtool patch python xmlto make zip unzip git subversion wget p7zip man
 gperf winpty texinfo gyp-git doxygen autoconf-archive itstool ruby mintty flex
 
 set mingwpackages=cmake dlfcn libpng gcc nasm pcre tools-git yasm ninja pkgconf meson ccache jq ^
-clang
+clang lld
 
 :: built-ins
 set ffmpeg_options_builtin=--disable-autodetect amf bzlib cuda cuvid d3d11va dxva2 ^
@@ -1743,6 +1743,9 @@ goto :EOF
     if %CC%==clang (
         echo.export CC="ccache clang"
         echo.export CXX="ccache clang++"
+        echo.export CC_LD=lld
+        echo.export CXX_LD=lld
+        echo.export LD=ld.lld
     ) else (
         echo.export CC="ccache gcc"
         echo.export CXX="ccache g++"
