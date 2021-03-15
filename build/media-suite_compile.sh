@@ -221,6 +221,7 @@ fi
 _check=(libxml2.a libxml2/libxml/xmlIO.h libxml-2.0.pc)
 if { enabled libxml2 || [[ $cyanrip = y ]]; } &&
     do_vcs "https://gitlab.gnome.org/GNOME/libxml2.git";then
+    do_patch "https://gitlab.gnome.org/GNOME/libxml2/-/merge_requests/107.patch" am
     do_uninstall include/libxml2/libxml "${_check[@]}"
     CFLAGS+=" -DLIBXML_STATIC_FOR_DLL -DNOLIBTOOL" \
         do_cmakeinstall -DLIBXML2_WITH_PROGRAMS=OFF -DLIBXML2_WITH_TESTS=OFF -DLIBXML2_WITH_PYTHON=OFF
