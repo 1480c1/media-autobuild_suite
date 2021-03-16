@@ -1308,7 +1308,7 @@ do_meson() {
     [[ -f "$(get_first_subdir -f)/do_not_reconfigure" ]] &&
         return
     # shellcheck disable=SC2086
-    PKG_CONFIG="pkgconf --keep-system-libs" CC=${CC/ccache /}.bat CXX=${CXX/ccache /}.bat \
+    PKG_CONFIG="pkgconf --keep-system-libs" \
         log "meson" meson "$root" --default-library=static --buildtype=release \
         --prefix="$LOCALDESTDIR" --backend=ninja $bindir "$@" "${meson_extras[@]}"
     extra_script post meson
