@@ -1769,9 +1769,9 @@ goto :EOF
     echo.case $CC in
     echo.*gcc*^) CFLAGS="${CFLAGS}-mthreads "
     echo.esac
-    echo.CFLAGS="${CFLAGS}-mtune=generic -O2 -pipe"
+    echo.CFLAGS="${CFLAGS}-mtune=generic -O2 -pipe -fstack-protector-strong"
     echo.CXXFLAGS="${CFLAGS}"
-    echo.LDFLAGS="-pipe -static-libgcc -static-libstdc++"
+    echo.LDFLAGS="-pipe -static-libgcc -static-libstdc++ -fstack-protector-strong"
     echo.export DXSDK_DIR ACLOCAL_PATH PKG_CONFIG PKG_CONFIG_PATH CPPFLAGS CFLAGS CXXFLAGS LDFLAGS MSYSTEM
     echo.
     echo.export CARGO_HOME="/opt/cargo" RUSTUP_HOME="/opt/cargo"
