@@ -1771,8 +1771,9 @@ goto :EOF
     echo.esac
     echo.CFLAGS="${CFLAGS}-mtune=generic -O2 -pipe -fstack-protector-strong"
     echo.CXXFLAGS="${CFLAGS}"
+    echo.RUSTFLAGS="-Clink-arg=-lssp_nonshared -Clink-arg=-lssp -Clink-arg=-ladvapi32"
     echo.LDFLAGS="-pipe -static-libgcc -static-libstdc++ -fstack-protector-strong"
-    echo.export DXSDK_DIR ACLOCAL_PATH PKG_CONFIG PKG_CONFIG_PATH CPPFLAGS CFLAGS CXXFLAGS LDFLAGS MSYSTEM
+    echo.export DXSDK_DIR ACLOCAL_PATH PKG_CONFIG PKG_CONFIG_PATH CPPFLAGS CFLAGS CXXFLAGS RUSTFLAGS LDFLAGS MSYSTEM
     echo.
     echo.export CARGO_HOME="/opt/cargo" RUSTUP_HOME="/opt/cargo"
     echo.export CCACHE_DIR="$HOME/.ccache"
