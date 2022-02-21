@@ -209,7 +209,7 @@ if [[ -n $have_updates ]]; then
     /usr/bin/grep -Eq '^(pacman|bash|msys2-runtime)$' <<< "$have_updates" &&
         touch /build/update_core &&
         have_updates="$(/usr/bin/grep -Ev '^(pacman|bash|msys2-runtime)$' <<< "$have_updates")"
-    xargs $nargs pacman -S --noconfirm --ask 20 --overwrite "/mingw64/*" \
+    xargs $nargs pacman -S --noconfirm --asdeps --overwrite "/mingw64/*" \
         --overwrite "/mingw32/*" --overwrite "/usr/*" <<< "$have_updates"
 fi
 

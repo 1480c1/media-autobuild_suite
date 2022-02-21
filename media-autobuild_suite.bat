@@ -1591,18 +1591,19 @@ if not exist %instdir%\mintty.lnk (
     echo.first update
     echo.-------------------------------------------------------------------------------
     title first msys2 update
-    call :runBash firstUpdate.log pacman --noconfirm -Sy --asdeps pacman-mirrors
-
-    echo.-------------------------------------------------------------------------------
-    echo.critical updates
-    echo.-------------------------------------------------------------------------------
-    pacman -S --needed --ask=20 --noconfirm --asdeps bash pacman msys2-runtime
+    call :runBash firstUpdate.log pacman --noconfirm -Syu --asdeps
 
     echo.-------------------------------------------------------------------------------
     echo.second update
     echo.-------------------------------------------------------------------------------
     title second msys2 update
     call :runBash secondUpdate.log pacman --noconfirm -Syu --asdeps
+
+    echo.-------------------------------------------------------------------------------
+    echo.third update
+    echo.-------------------------------------------------------------------------------
+    title third msys2 update
+    call :runBash thirdUpdate.log pacman --noconfirm -Su --asdeps
 
     echo.-------------------------------------------------------------------------------
     echo.marking all preinstalled packages as deps
