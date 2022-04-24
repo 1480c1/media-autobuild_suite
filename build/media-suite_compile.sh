@@ -1413,6 +1413,8 @@ if [[ $ffmpeg != no ]] && enabled libvidstab &&
     do_checkIfExist
 fi
 
+grep_or_sed psapi "$(file_installed vidstab.pc)" 's;-fopenmp=libomp.*;& -lomp -lkernel32 -lpsapi;'
+
 _check=(libzvbi.{h,{l,}a} zvbi-0.2.pc)
 if [[ $ffmpeg != no ]] && enabled libzvbi &&
     do_pkgConfig "zvbi-0.2 = 0.2.35" &&
