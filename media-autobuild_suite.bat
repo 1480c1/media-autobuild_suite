@@ -1815,7 +1815,7 @@ set compileArgs=--cpuCount=%cpuCount% --build32=%build32% --build64=%build64% ^
     @REM --autouploadlogs=%autouploadlogs%
     set "noMintty=%noMintty%"
     if %build64%==yes ( set "MSYSTEM=MINGW64" ) else set "MSYSTEM=MINGW32"
-    set "MSYS2_PATH_TYPE=inherit"
+    @REM set "MSYS2_PATH_TYPE=inherit"
     if %noMintty%==y set "PATH=%PATH%"
     set "build=%build%"
     set "instdir=%instdir%"
@@ -1825,7 +1825,7 @@ if %noMintty%==y (
 ) else (
     if exist %build%\compile.log del %build%\compile.log
     start "compile" /I /LOW %CD%\msys64\usr\bin\mintty.exe -i /msys2.ico -t "media-autobuild_suite" ^
-    --log 2>&1 %build%\compile.log /bin/env MSYSTEM=%MSYSTEM% MSYS2_PATH_TYPE=inherit ^
+    --log 2>&1 %build%\compile.log /bin/env MSYSTEM=%MSYSTEM% ^
     /usr/bin/bash ^
     --login /build/media-suite_compile.sh %compileArgs%
 )
