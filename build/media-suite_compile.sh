@@ -2430,11 +2430,12 @@ if [[ $mpv != n ]] && pc_exists libavcodec libavformat libswscale libavfilter; t
     if do_vcs "$SOURCE_REPO_MPV"; then
         hide_conflicting_libs
         create_ab_pkgconfig
+        do_uninstall bin-video/mpv{.exe,-2.dll}.debug "${_check[@]}"
 
-        log bootstrap /usr/bin/python bootstrap.py
+        # for cleaning up older builds that may have been done with waf
         if [[ -d build ]]; then
             WAF_NO_PREFORK=1 /usr/bin/python waf distclean >/dev/null 2>&1
-            do_uninstall bin-video/mpv{.exe,-2.dll}.debug "${_check[@]}"
+            rm -rf build # Meson's recommended way to clean up previous runs!
         fi
 
         mpv_ldflags=("-L$LOCALDESTDIR/lib" "-L$MINGW_PREFIX/lib")
