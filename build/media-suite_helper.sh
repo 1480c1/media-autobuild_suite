@@ -814,21 +814,25 @@ do_pkgConfig() {
     fi
 }
 
-do_readoptionsfile() {
-    local filename="$1"
-    if [[ -f $filename ]]; then
-        sed -r '# remove commented text
-                s/#.*//
-                # delete empty lines
-                /^\s*$/d
-                # remove leading whitespace
-                s/^\s+//
-                # remove trailing whitespace
-                s/\s+$//
-                ' "$filename" | tr -d '\r' # cut cr out from any crlf files
-        echo "Imported options from ${filename##*/}" >&2
+do_readoptionsfile() (
+    filename="$1"
+    if ! [[ -f $filename ]]; then
+        return
     fi
-}
+
+    # validate file doesn't have weird subshell stuff before we source it
+    if grep -qE '\$\(|)|`' "$filename"; then
+        echo "Found potential issue in $filename" >&2
+        grep -E '\$\(|)|`' "$filename" >&2
+        return
+    fi
+    options=()
+    eval "options=(
+    $(tr -d '\r' < "$filename") # cut cr out from any crlf files
+    )"
+    printf '%s\n' "${options[@]}"
+    echo "Imported options from ${filename##*/}" >&2
+)
 
 do_readbatoptions() {
     local varname="$1"
