@@ -1878,16 +1878,15 @@ goto :EOF
     echo.
     echo.CARCH="${MINGW_CHOST%%%%-*}"
     echo.CPATH="$(cygpath -pm $LOCALDESTDIR/include:$MINGW_PREFIX/include)"
-    echo.LIBRARY_PATH="$(cygpath -pm $MINGW_PREFIX/lib)"
-    echo.export CPATH LIBRARY_PATH
+    echo.export CPATH
     echo.
     echo.MANPATH="${LOCALDESTDIR}/share/man:${MINGW_PREFIX}/share/man:/usr/share/man"
     echo.INFOPATH="${LOCALDESTDIR}/share/info:${MINGW_PREFIX}/share/info:/usr/share/info"
     echo.
     echo.DXSDK_DIR="${MINGW_PREFIX}/${MINGW_CHOST}"
     echo.ACLOCAL_PATH="${LOCALDESTDIR}/share/aclocal:${MINGW_PREFIX}/share/aclocal:/usr/share/aclocal"
-    echo.PKG_CONFIG="${MINGW_PREFIX}/bin/pkgconf --keep-system-libs --keep-system-cflags --static"
-    echo.PKG_CONFIG_PATH="${LOCALDESTDIR}/lib/pkgconfig:${MINGW_PREFIX}/lib/pkgconfig"
+    echo.PKG_CONFIG="${MINGW_PREFIX}/bin/pkgconf --static"
+    echo.PKG_CONFIG_PATH="${LOCALDESTDIR}/lib/pkgconfig"
     echo.CPPFLAGS="-D_FORTIFY_SOURCE=2 -D__USE_MINGW_ANSI_STDIO=1"
     echo.CFLAGS="-fstack-protector-strong -mtune=generic -O2 -pipe"
     if %CC%==gcc (
