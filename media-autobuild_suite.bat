@@ -1887,6 +1887,7 @@ goto :EOF
     echo.ACLOCAL_PATH="${LOCALDESTDIR}/share/aclocal:${MINGW_PREFIX}/share/aclocal:/usr/share/aclocal"
     echo.PKG_CONFIG="${MINGW_PREFIX}/bin/pkgconf --static"
     echo.PKG_CONFIG_PATH="${LOCALDESTDIR}/lib/pkgconfig"
+    echo.PKG_CONFIG_ALLOW_SYSTEM_CFLAGS=1
     echo.CPPFLAGS="-D_FORTIFY_SOURCE=2 -D__USE_MINGW_ANSI_STDIO=1"
     echo.CFLAGS="-fstack-protector-strong -mtune=generic -O2 -pipe"
     if %CC%==gcc (
@@ -1899,7 +1900,7 @@ goto :EOF
     ) else (
         echo.LDFLAGS+=" -static-libstdc++"
     )
-    echo.export DXSDK_DIR ACLOCAL_PATH PKG_CONFIG PKG_CONFIG_PATH CPPFLAGS CFLAGS CXXFLAGS LDFLAGS MSYSTEM
+    echo.export DXSDK_DIR ACLOCAL_PATH PKG_CONFIG PKG_CONFIG_PATH PKG_CONFIG_ALLOW_SYSTEM_CFLAGS CPPFLAGS CFLAGS CXXFLAGS LDFLAGS MSYSTEM
     echo.
     echo.export CARGO_HOME="/opt/cargo" RUSTUP_HOME="/opt/cargo"
     echo.export CCACHE_DIR="${LOCALBUILDDIR}/cache"
