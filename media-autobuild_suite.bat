@@ -1884,7 +1884,15 @@ goto :EOF
 :writeProfile
 (
     echo.#!/usr/bin/bash
-    echo.MSYSTEM=MINGW%1
+    if %CC%==clang (
+        echo.MSYSTEM=CLANG%1
+    ) else (
+        if %1==32 (
+            echo.MSYSTEM=MINGW32
+        ) else (
+            echo.MSYSTEM=UCRT64
+        )
+    )
     echo.source /etc/msystem
     echo.
     echo.# package build directory
