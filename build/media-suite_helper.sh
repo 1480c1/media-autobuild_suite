@@ -2137,29 +2137,34 @@ EOF
         printf '%s\r\n' "@echo off" "" "bash $LOCALDESTDIR/bin/ab-pkg-config --static %*" > "$LOCALDESTDIR"/bin/ab-pkg-config-static.bat
 }
 
-create_ab_ccache() {
-    local bin temp_file ccache_path=false ccache_win_path=
+create_ab_ccache() (
+    bin=''
+    ccache_path=false
+    ccache_win_path=''
     temp_file=$(mktemp)
     if [[ $ccache == y ]] && type ccache > /dev/null 2>&1; then
         ccache_path="$(command -v ccache)"
-        ccache_win_path=$(cygpath -m "$ccache_path")
+        ccache_win_path="$(cygpath -m "$ccache_path")"
     fi
-    mkdir -p "$LOCALDESTDIR"/bin > /dev/null 2>&1
+    mkdir -p "$LOCALDESTDIR/bin" > /dev/null 2>&1
     for bin in {$MINGW_CHOST-,}{gcc,g++} clang{,++} cc cpp c++; do
         type "$bin" > /dev/null 2>&1 || continue
+        bin_path="$(command -v "$bin")"
         cat << EOF > "$temp_file"
 @echo off >nul 2>&1
 rem() { "\$@"; }
 rem test -f nul && rm nul
-rem $ccache_path --help > /dev/null 2>&1 && $ccache_path $(command -v $bin) "\$@" || $(command -v $bin) "\$@"
+rem export PATH="$(cygpath -pu "$PATH")"
+rem "$ccache_path" --help > /dev/null 2>&1 && "$ccache_path" "$bin_path" "\$@" || "$bin_path" "\$@"
 rem exit \$?
-$ccache_win_path $(cygpath -m "$(command -v $bin)") %*
+set "PATH=$(cygpath -pw "$PATH")"
+"$ccache_win_path" "$(cygpath -m "$bin_path")" %*
 EOF
         diff -q "$temp_file" "$LOCALDESTDIR/bin/$bin.bat" > /dev/null 2>&1 || cp -f "$temp_file" "$LOCALDESTDIR/bin/$bin.bat"
         chmod +x "$LOCALDESTDIR/bin/$bin.bat"
     done
-    rm "$temp_file"
-}
+    rm -f "$temp_file"
+)
 
 create_cmake_toolchain() {
     local _win_paths mingw_path
