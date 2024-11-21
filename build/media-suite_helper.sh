@@ -1708,14 +1708,14 @@ do_unhide_all_sharedlibs() {
 
 do_pacman_resolve_pkgs() (
     : "${prefix=$MINGW_PACKAGE_PREFIX-}"
-    pacsift --exact --sync --any "${@/#/--provides=$prefix}" "${@/#/--name=$prefix}" 2>&1 | sed "s|^.*/$prefix||"
+    timeout 10s pacsift --exact --sync --any "${@/#/--provides=$prefix}" "${@/#/--name=$prefix}" 2>&1 | sed "s|^.*/$prefix||"
 )
 
 is_pkg_installed() (
     : "${prefix=$MINGW_PACKAGE_PREFIX-}"
     # checks if a package is installed/provided by a package that is installed
     # example is omp, which is purely a provided packge, so that fails with pacman -Qe
-    pacsift --exact --local --any --exists --provides="$prefix$1" --name="$prefix$1" > /dev/null 2>&1
+    timeout 10s pacsift --exact --local --any --exists --provides="$prefix$1" --name="$prefix$1" > /dev/null 2>&1
 )
 
 do_pacman_install() (
